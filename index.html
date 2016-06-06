@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+     <link href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+     </script>
+     <style type="text/css" rel="stylesheet">
+    
+    
+      body{
+      padding:10px;
+      background-color:#0099ff;
+      color:#001f33;
+      font-family:'Muli';
+      
+      
+      }
+    
+    </style>
+  </head>
+  <body>
+    <p> Enter information</p>
+     <p>Email</p>
+     <form>
+     <div class="block" id="button-bar">
+       <input id="to-Field" type="text" placeholder="recipient email/group"/>
+       
+       <br>
+       <p>Subject</p>
+       <input id="subject-Field" type="text" placeholder="subject"/>
+       
+       <br>
+       <br>
+       <input id="sendButton" type="button" value="Send Email" />
+       <input id="closeButton" type="button" value="Close"  onclick="google.script.host.close()"/>
+     </div>
+     </form>
+  
+    
+  </body>
+  
+  <script>
+  
+  $(function(){
+      $('#sendButton').click(createEmail);
+      
+    });
+    
+     
+    function closeSidebar(){
+    
+    
+    }
+    
+    function createEmail(){
+    
+        
+        //run the script on the Code.gs file w/ handlers
+        
+       if(subject!="" || recipients!=""){
+        
+        this.disabled = true;
+        var recipients = $("#to-Field").val();
+        var subject = $("#subject-Field").val();
+        
+         
+        
+        google.script.run
+              .withSuccessHandler(
+                function(returnSuccess, element) {
+                  element.disabled = false;
+                  
+                })
+              .withFailureHandler(
+                function(msg, element) {
+                  showError(msg, $('#button-bar'));
+                  element.disabled = false;
+                })
+              .withUserObject(this)
+              .sendEmailToRecipients(recipients, subject); //change method
+              
+              
+               
+    
+        } else {
+        
+         showError("You must include a recipient email and a subject", $('#button-bar'));
+         element.disabled = false;
+        
+        }
+    }
+    
+    
+    function showError(msg, element) {
+          var div = $('<div id="error" class="error">' + msg + '</div>');
+          $(element).after(div);
+        }
+  
+  </script>
+</html>
+
+
